@@ -38,8 +38,8 @@ Es una página web donde puedes:
 
 ## Problemas que tuve
 
-- Al principio no me conectaba a MySQL porque tenía mal la contraseña en application.properties
-- Tuve que aprender cómo funciona Spring Security para hacer el login
+- Al principio no me conectaba a MySQL porque tenía mal la configuracion de los DAO y no tenia el Services.
+- Tuve que aprender cómo funciona Spring Security para hacer el login con base de datos.
 
 ## Por hacer
 
