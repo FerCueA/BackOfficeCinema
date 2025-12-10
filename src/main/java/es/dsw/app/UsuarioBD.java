@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 // Utilizamos esta clase auxular para conectar la BD con el proyecto
 @Service
-public class DetallesUsuario implements UserDetailsService {
+public class UsuarioBD implements UserDetailsService {
 
     /**
      * Spring Security llama a este método automáticamente cuando alguien intenta hacer login.
