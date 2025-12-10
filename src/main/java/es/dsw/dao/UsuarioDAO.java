@@ -45,7 +45,7 @@ public class UsuarioDAO {
         return objListaUsuarios;
     }
 
-    // Funcion para obtener los datos por su nombre de usuario
+    // Funcion para obtener los datos completos por su nombre de usuario
     public Usuario getUsuarioByUsername(String username) throws SQLException {
 
         Usuario usuario = null;
@@ -53,7 +53,8 @@ public class UsuarioDAO {
 
         if (!objMySQLConnection.isError()) {
 
-            String sql = "SELECT IDUSER_USF, USERNAME_USF, PASSWORD_USF, EMAIL_USF FROM USER_FILM WHERE USERNAME_USF = '" + username + "'";
+            String sql = "SELECT IDUSER_USF, USERNAME_USF, PASSWORD_USF, NAME_USF, FIRSTSURNAME_USF, SECOUNDSURNAME_USF, EMAIL_USF " +
+                         "FROM USER_FILM WHERE USERNAME_USF = '" + username + "'";
             ResultSet objResultSet = objMySQLConnection.executeSelect(sql);
 
             try {
@@ -63,6 +64,9 @@ public class UsuarioDAO {
                     usuario.setIdUser(objResultSet.getInt("IDUSER_USF"));
                     usuario.setUsername(objResultSet.getString("USERNAME_USF"));
                     usuario.setPassword(objResultSet.getString("PASSWORD_USF"));
+                    usuario.setName(objResultSet.getString("NAME_USF"));
+                    usuario.setFirstSurname(objResultSet.getString("FIRSTSURNAME_USF"));
+                    usuario.setSecondSurname(objResultSet.getString("SECOUNDSURNAME_USF"));
                     usuario.setEmail(objResultSet.getString("EMAIL_USF"));
                 }
             } catch (SQLException e) {

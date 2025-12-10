@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="es" thymeleaf="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -31,49 +32,67 @@
             class="mr-3 rounded-circle img-thumbnail shadow-sm"
           />
           <div class="media-body">
-            <h4 class="m-0">[nombre y apellidos]</h4>
-            <p class="font-weight-light text-muted mb-0">[username]</p>
+            <h4
+              class="m-0"
+              th:text="${nombre + ' ' + primerApellido + ' ' + segundoApellido}"
+            >
+              Nombre completo
+            </h4>
+            <p class="font-weight-light text-muted mb-0" th:text="${username}">
+              username
+            </p>
           </div>
         </div>
       </div>
 
       <!--Area del menú -->
-       <!--MENU LATERAL DEL NAV  -->
+      <!--MENU LATERAL DEL NAV  -->
       <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">
         Usuario
       </p>
 
       <ul class="nav flex-column bg-white mb-0">
+        <!-- Mi Perfil - Visible para TODOS -->
         <li class="nav-item">
-          <a href="#" class="nav-link text-dark font-italic bg-light">
+          <a th:href="@{/home}" class="nav-link text-dark font-italic bg-light">
             <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
             Mi Perfil
           </a>
         </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link text-dark font-italic">
+
+        <!-- Nuevo usuario - Solo ADMIN -->
+        <li class="nav-item" sec:authorize="hasRole('admin')">
+          <a th:href="@{/usuarios/nuevo}" class="nav-link text-dark font-italic">
             <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
             Nuevo usuario
           </a>
         </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link text-dark font-italic">
+
+        <!-- Nuevo rol - Solo ADMIN -->
+        <li class="nav-item" sec:authorize="hasRole('admin')">
+          <a th:href="@{/roles/nuevo}" class="nav-link text-dark font-italic">
             <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
             Nuevo rol
           </a>
         </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link text-dark font-italic">
+
+        <!-- Listar usuarios - Solo ADMIN -->
+        <li class="nav-item" sec:authorize="hasRole('admin')">
+          <a th:href="@{/usuarios/listar}" class="nav-link text-dark font-italic">
             <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
             Listar usuarios
           </a>
         </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link text-dark font-italic">
+
+        <!-- Listar roles - Solo ADMIN -->
+        <li class="nav-item" sec:authorize="hasRole('admin')">
+          <a th:href="@{/roles/listar}" class="nav-link text-dark font-italic">
             <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
             Listar roles
           </a>
         </li>
+
+        <!-- Salir - Visible para TODOS -->
         <li class="nav-item">
           <a th:href="@{/logout}" class="nav-link text-dark font-italic">
             <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
@@ -87,24 +106,23 @@
       </p>
 
       <ul class="nav flex-column bg-white mb-0">
-        <li class="nav-item">
+        <!-- Nueva película - Solo ADMIN y COMMERCIAL -->
+        <li class="nav-item" sec:authorize="hasAnyRole('admin', 'commercial')">
           <a
-            href="#"
+            th:href="@{/peliculas/nueva}"
             class="nav-link text-dark font-italic"
-            data-toggle="modal"
-            data-target="#NuevaPeliculaCenter"
           >
             <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
             Nueva película
           </a>
         </li>
+
+        <!-- Listar películas - Visible para TODOS -->
         <li class="nav-item">
           <a
             id="IdListarPeliculas"
-            href="#"
+            th:href="@{/peliculas/listar}"
             class="nav-link text-dark font-italic"
-            data-toggle="modal"
-            data-target="#ListarPeliculasVisual"
           >
             <i class="fa fa-address-card mr-3 text-primary fa-fw"></i>
             Listar películas
@@ -132,13 +150,24 @@
       <!-- Capa seccion01 donde se cargarán las secciones-->
       <div id="seccion01">
         <h2 class="display-4 text-white"><b>Mi Perfil</b></h2>
-        <p class="lead text-white mb-0"><b>Nombre:</b> [nombre]</p>
-        <p class="lead text-white mb-0"><b>Apellidos:</b> [apellidos]</p>
-        <p class="lead text-white mb-0"><b>Nombre de usuario:</b> [username]</p>
-        <p class="lead text-white mb-0"><b>Roles:</b> [roles de usuario]</p>
+        <p class="lead text-white mb-0">
+          <b>Nombre:</b> <span th:text="${nombre}">nombre</span>
+        </p>
+        <p class="lead text-white mb-0">
+          <b>Apellidos:</b>
+          <span th:text="${primerApellido + ' ' + segundoApellido}"
+            >apellidos</span
+          >
+        </p>
+        <p class="lead text-white mb-0">
+          <b>Nombre de usuario:</b> <span th:text="${username}">username</span>
+        </p>
+        <p class="lead text-white mb-0">
+          <b>Roles:</b> <span th:text="${roles}">roles de usuario</span>
+        </p>
         <br />
         <p class="lead text-white">
-          <a th:href="@{/home}" class="text-white"> <u>Salir</u></a>
+          <a th:href="@{/logout}" class="text-white"> <u>Salir</u></a>
         </p>
         <!-- <div class="separator"></div> -->
       </div>

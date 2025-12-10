@@ -16,14 +16,28 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        // para permitir sin autenticar
+                        // lo que podemos acceder sin autenticacion , y permite mostarse
                         .requestMatchers("/styles/**", "/js/**", "/bootstrap/**", "/img/**").permitAll()
+
+                        // el accceso al home es para todos los usuaros autienticfados
+                        .requestMatchers("/home").authenticated()
+
+                        // Usuarios con rol de admin
+                        .requestMatchers("/usuarios/**").hasRole("admin")
+                        .requestMatchers("/roles/**").hasRole("admin")
+
+                        // usuarios con rol de admin y comercial
+                        .requestMatchers("/peliculas/nueva").hasAnyRole("admin", "commercial")
+
+                        // usuarios cualquier rol autenticado
+                        .requestMatchers("/peliculas/listar").authenticated()
+
+                        // para cualqier otra cosa se neceista autenticacion
                         .anyRequest().authenticated())
 
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/loginprocess")
-                        // para que cargue por defecto la pagina principal despues del login (pop-up)
                         .defaultSuccessUrl("/home", true)
                         .permitAll())
 
@@ -31,12 +45,13 @@ public class SecurityConfig {
 
         return http.build();
     }
-
+    // si nos conectamos con usuarios en memoria o con base de datos necesitamos un encoder si o si
+    // este funcuiona para usuarios en memoria sin encriptar y en una base de datos tambien sin encriptar
     @Bean
-    // Tenemos que poner si o si este PasswordEncoder para que no de error al iniciar sesion
     @SuppressWarnings("deprecation")
     PasswordEncoder passwordEncoder() {
         PasswordEncoder encoder = NoOpPasswordEncoder.getInstance();
         return encoder;
     }
+
 }
