@@ -82,6 +82,8 @@ El proyecto implementa un sistema de cookies para recordar el último acceso del
 - [x] Encriptación de contraseñas con BCrypt
 - [x] Diseño responsive con Bootstrap
 - [x] Panel de usuario personalizado
+- [x] Implementacion de la navegacion del nav con Control de Roles
+
 
 
 ## Próximas mejoras
