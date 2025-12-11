@@ -34,7 +34,7 @@ public class SecurityConfig {
 
                         // para cualqier otra cosa se neceista autenticacion
                         .anyRequest().authenticated())
-
+                         // configuración del formulario de login 
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/loginprocess")

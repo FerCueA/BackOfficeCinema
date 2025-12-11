@@ -15,8 +15,9 @@ import java.util.ArrayList;
 public class UsuarioBD implements UserDetailsService {
 
     /**
-     * Spring Security llama a este método automáticamente cuando alguien intenta hacer login.
-     * Usa un método de UserDetailsService que trae por defecto Spring Security con el nombre de loadUserByUsername.
+     * Esta clase es la conectora de la base de datos con la aplicacion para verificar los datos de la base de datos
+     * El metodo loadUserByUsername busca el usuario en la base de datos y obtiene sus roles
+     * ese metodo lo trae el la implementacion de UserDetailsService de Spring Security
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -36,9 +37,10 @@ public class UsuarioBD implements UserDetailsService {
             ArrayList<String> roles = rolDAO.obtenerRolByUserId(usuario.getIdUser());
             
             // Convertimos el ArrayList a un array de String para Spring Security
+            // porque un usuaruo puede tener varios roles asignados
             String[] arrayRoles = roles.toArray(new String[0]);
 
-            // Convertimos el objeto Usuario al formato que Spring Security necesita
+            // Convertimos el objeto Usuario al formato que Spring Security que suele estar configurado en el inMemorry de Spring Security
             return User.withUsername(usuario.getUsername())
                     .password(usuario.getPassword()) // Spring compara esta password con la ingresada
                     .roles(arrayRoles) // Asignamos los roles desde la tabla ROL_FILM
